@@ -13,11 +13,14 @@ class RaceSeeder extends Seeder
      */
     public function run(): void
     {
-        foreach (range(1, 5) as $index) {
-            Race::create([
-                'track_name' => 'Snetterton',
-                'session_type' => now()->subDays($index),
-            ]);
-        }
+        $tracks = ['Monza', 'Snetterton', 'Imola'];
+
+        $randTrackIndex = array_rand($tracks);
+        $track = $tracks[$randTrackIndex];
+
+        Race::create([
+            'track_name' => $track,
+            'session_type' => 'R',
+        ]);
     }
 }

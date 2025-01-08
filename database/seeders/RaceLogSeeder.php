@@ -15,10 +15,11 @@ class RaceLogSeeder extends Seeder
      */
     public function run(): void
     {
-        $drivers = Driver::all();
         $races = Race::all();
 
         foreach ($races as $race) {
+            $drivers = Driver::inRandomOrder()->take(6)->get();
+
             $positions = range(1, $drivers->count());
             shuffle($positions);
 
@@ -34,8 +35,25 @@ class RaceLogSeeder extends Seeder
                     'driver_id' => $driver->id,
                     'position' => $positions[$index],
                     'fastest_lap' => $time,
-                    'incidents' => rand(0, 5),
+                    'incidents' => $this->generateIncidents(),
                 ]);
+            }
+        }
+    }
+
+    private function generateIncidents(): int
+    {
+        $weights = [70, 20, 10, 7, 3];
+        $values = [0, 1, 2, 3, 4];
+
+        $sum = array_sum($weights);
+        $rand = mt_rand(1, $sum);
+
+        $cumulativeWeight = 0;
+        foreach ($weights as $index => $weight) {
+            $cumulativeWeight += $weight;
+            if ($rand <= $cumulativeWeight) {
+                return $values[$index];
             }
         }
     }

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('driver_id')->constrained()->onDelete('cascade');
             $table->integer('position');
             $table->time('fastest_lap')->nullable();
+            $table->integer('elo_change')->default(0);
             $table->integer('incidents')->default(0);
             $table->timestamps();
         });

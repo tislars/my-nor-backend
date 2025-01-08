@@ -16,8 +16,11 @@ class RaceLogFactory extends Factory
      */
     public function definition(): array
     {
-        $seconds = rand(105, 126);
-        $time = gmdate('i:s', $seconds);
+        $milliseconds = rand(105000, 127000);
+        $minutes = floor($milliseconds / 60000);
+        $seconds = floor(($milliseconds % 60000) / 1000);
+        $fractional = $milliseconds % 1000;
+        $time = sprintf('%d:%02d.%03d', $minutes, $seconds, $fractional);
 
         return [
             'race_id' => \App\Models\Race::factory(),
