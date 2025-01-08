@@ -1,15 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Race Logs</title>
-    @vite('resources/css/app.css')
-</head>
-
-<body>
-    <h1>Race Logs</h1>
+<x-layout>
+    <h1 class="text-2xl">Race Logs</h1>
     <table>
         <thead>
             <tr>
@@ -27,7 +17,7 @@
         <tbody>
             @forelse ($raceLogs as $log)
                 <tr>
-                    <td>{{ $log->race->id }}</td>
+                    <td>#{{ $log->race->id }}</td>
                     <td>{{ $log->race->track_name }}</td>
                     <td>{{ $log->race->session_type }}</td>
                     <td>{{ $log->driver->first_name . ' ' . $log->driver->last_name }}</td>
@@ -48,6 +38,4 @@
             @endforelse
         </tbody>
     </table>
-</body>
-
-</html>
+</x-layout>
