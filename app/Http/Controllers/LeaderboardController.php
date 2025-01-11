@@ -13,12 +13,13 @@ class LeaderboardController extends Controller
 
     public function index(): View
     {
-        $drivers = Driver::orderByDesc('elo')->get();
-
+        $drivers = Driver::orderByDesc('elo')->paginate(3);
+        $currentPage = $drivers->currentPage();
+        $perPage = $drivers->perPage();
         $headers = ['Rank', 'Short Name', 'Name', 'ELO', 'Safety Rating'];
-        $rows = $drivers->map(function ($driver, $index) {
+        $rows = $drivers->map(function ($driver, $index) use ($currentPage, $perPage) {
             return [
-                'rank' => '#' . ($index + 1),
+                'rank' => '#' . (($currentPage - 1) * $perPage + $index + 1),
                 'short_name' => $driver->short_name,
                 'name' => $driver->first_name . ' ' . $driver->last_name,
                 'elo' => number_format($driver->elo, 0),
@@ -26,7 +27,7 @@ class LeaderboardController extends Controller
             ];
         })->toArray();
 
-        $rowClasses = $drivers->mapWithKeys(function ($driver, $index) {
+        $rowClasses = $drivers->mapWithKeys(callback: function ($driver, $index) {
             return [
                 $index => match ($index) {
                     0 => 'bg-yellow-300',
@@ -37,7 +38,7 @@ class LeaderboardController extends Controller
             ];
         })->toArray();
 
-        return view('leaderboards.index', compact('headers', 'rows', 'rowClasses'));
+        return view('leaderboards.index', compact('headers', 'rows', 'rowClasses', 'drivers'));
     }
 
     /**

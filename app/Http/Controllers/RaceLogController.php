@@ -57,7 +57,44 @@ class RaceLogController extends Controller
 
     public function index(): View
     {
-        $raceLogs = RaceLog::with(['driver', 'race'])->orderBy('race_id')->orderBy('position')->get();
-        return view('racelogs.index', compact('raceLogs'));
+        $headers = [
+            'ID',
+            'Track',
+            'Session Type',
+            'Driver',
+            'Position',
+            'Fatest Lap',
+            'Incidents',
+            'ELO Change',
+            'ELO'
+        ];
+        $raceLogs = RaceLog::with(['driver', 'race'])
+            ->orderBy('race_id')
+            ->orderBy('position')
+            ->paginate(10);
+
+        $rows = $raceLogs->map(function ($log) {
+            $eloChange = $log->elo_change;
+
+            return [
+                'Race ID' => '#' . $log->race->id,
+                'Track' => $log->race->track_name,
+                'Session Type' => $log->race->session_type,
+                'Driver' => $log->driver->first_name . ' ' . $log->driver->last_name,
+                'Position' => $log->position,
+                'Fastest Lap' => $log->fastest_lap,
+                'Incidents' => $log->incidents,
+                'ELO Change' => [
+                    'value' => $eloChange,
+                    'class' => $eloChange > 0
+                        ? 'bg-green-500 text-white'
+                        : ($eloChange < 0 ? 'bg-red-500 text-white' : 'bg-gray-500 text-white'),
+                ],
+                'ELO' => number_format($log->driver->elo, 0),
+            ];
+        })
+            ->toArray();
+
+        return view('racelogs.index', compact('raceLogs', 'headers', 'rows'));
     }
 }

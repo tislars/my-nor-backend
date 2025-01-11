@@ -3,18 +3,26 @@
         <thead>
             <tr>
                 @foreach ($headers as $header)
-                    <th>{{ $header }}</th>
+                    <th class="border px-4 py-2 text-left">{{ $header }}</th>
                 @endforeach
             </tr>
         </thead>
         <tbody>
-            @foreach ($rows as $row)
+            @forelse ($rows as $row)
                 <tr>
                     @foreach ($row as $cell)
-                        <td class="border px-4 py-2">{!! $cell !!}</td>
+                        @if (is_array($cell) && isset($cell['class']))
+                            <td class="border px-4 py-2 {{ $cell['class'] }}">{!! $cell['value'] !!}</td>
+                        @else
+                            <td class="border px-4 py-2">{!! $cell !!}</td>
+                        @endif
                     @endforeach
                 </tr>
-            @endforeach
+            @empty
+                <tr>
+                    <td colspan="{{ count($headers) }}" class="border px-4 py-2 text-center">No data available.</td>
+                </tr>
+            @endforelse
         </tbody>
     </table>
 </div>
