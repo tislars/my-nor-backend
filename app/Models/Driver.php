@@ -19,4 +19,12 @@ class Driver extends Model
     {
         return $this->hasMany(RaceLog::class);
     }
+
+    /**
+     * Get all race cars associated with the driver.
+     */
+    public function raceCars()
+    {
+        return $this->hasMany(RaceCar::class);
+    }
 }

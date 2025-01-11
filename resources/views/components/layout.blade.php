@@ -19,7 +19,10 @@
                 <a href="{{ route('racelogs.index') }}" class="text-gray-300 hover:text-white hover:underline transition">
                     Racelogs
                 </a>
-                <a href="{{ route('leaderboard.index') }}"
+                <a href="{{ route('race-cars.index') }}" class="text-gray-300 hover:text-white hover:underline transition">
+                    Race Cars
+                </a>
+                <a href="{{ route('leaderboards.index') }}"
                     class="text-gray-300 hover:text-white hover:underline transition">
                     Leaderboard
                 </a>

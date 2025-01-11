@@ -17,7 +17,7 @@ class RaceFactory extends Factory
     public function definition(): array
     {
         return [
-            'track_name' => 'Snetterton',
+            'track_name' => 'snetterton',
             'session_type' => 'R',
         ];
     }

@@ -13,7 +13,7 @@ class RaceSeeder extends Seeder
      */
     public function run(): void
     {
-        $tracks = ['Monza', 'Snetterton', 'Imola'];
+        $tracks = ['monza', 'snetterton', 'imola', 'red-bull-ring'];
 
         $randTrackIndex = array_rand($tracks);
         $track = $tracks[$randTrackIndex];

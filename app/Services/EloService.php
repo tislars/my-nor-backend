@@ -11,11 +11,9 @@ class EloService
     /**
      * @param Driver $driverA
      * @param Driver $driverB
-     * @param integer $positionA
-     * @param integer $positionB
      * @return array<string, int>
      */
-    public function calculateElo(Driver $driverA, Driver $driverB, int $positionA, int $positionB, int $incidentsA, int $incidentsB): array
+    public function calculateElo(Driver $driverA, Driver $driverB, int $positionA, int $positionB): array
     {
         $ratingA = $driverA->elo;
         $ratingB = $driverB->elo;
@@ -29,18 +27,15 @@ class EloService
         $changeA = (int) round($this->kFactor * ($scoreA - $expectedA));
         $changeB = (int) round($this->kFactor * ($scoreB - $expectedB));
 
-        $incidentPenaltyA = $incidentsA * 3;
-        $incidentPenaltyB = $incidentsB * 3;
-
-        $driverA->elo += $changeA - $incidentPenaltyA;
-        $driverB->elo += $changeB - $incidentPenaltyB;
+        $driverA->elo += $changeA;
+        $driverB->elo += $changeB;
 
         $driverA->save();
         $driverB->save();
 
         return [
-            'changeA' => $changeA - $incidentPenaltyA,
-            'changeB' => $changeB - $incidentPenaltyB,
+            'changeA' => $changeA,
+            'changeB' => $changeB,
         ];
     }
 }

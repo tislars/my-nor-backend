@@ -20,4 +20,12 @@ class Race extends Model
     {
         return $this->hasMany(RaceLog::class);
     }
+
+    /**
+     * Get all race cars for the race.
+     */
+    public function raceCars()
+    {
+        return $this->hasMany(RaceCar::class);
+    }
 }

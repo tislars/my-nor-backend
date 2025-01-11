@@ -43,8 +43,6 @@ class RaceLogController extends Controller
                     $driverB,
                     $raceLogs[$i]->position,
                     $raceLogs[$j]->position,
-                    $raceLogs[$i]->incidents,
-                    $raceLogs[$j]->incidents
                 );
 
                 $raceLogs[$i]->elo_change += $changeA;

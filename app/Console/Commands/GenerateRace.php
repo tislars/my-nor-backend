@@ -6,6 +6,7 @@ use Illuminate\Console\Command;
 use App\Models\Race;
 use App\Models\RaceLog;
 use App\Models\Driver;
+use App\Models\RaceCar;
 use App\Services\EloService;
 
 class GenerateRace extends Command
@@ -31,7 +32,7 @@ class GenerateRace extends Command
             return 1;
         }
 
-        $tracks = ['Monza', 'Snetterton', 'Imola'];
+        $tracks = ['monza', 'snetterton', 'imola', 'red-bull-ring'];
         $randTrackIndex = array_rand($tracks);
         $track = $tracks[$randTrackIndex];
         $race = Race::create([
@@ -45,6 +46,8 @@ class GenerateRace extends Command
         shuffle($positions);
 
         foreach ($drivers as $index => $driver) {
+            $carData = $this->generateCarData($driver);
+
             $milliseconds = rand(105000, 127000);
             $minutes = floor($milliseconds / 60000);
             $seconds = floor(($milliseconds % 60000) / 1000);
@@ -59,9 +62,19 @@ class GenerateRace extends Command
                 'fastest_lap' => $fastestLap,
                 'incidents' => $incidents,
             ]);
+
+            RaceCar::create([
+                'race_id' => $race->id,
+                'car_id' => $carData['carId'],
+                'race_number' => $carData['raceNumber'],
+                'car_model' => $carData['carModel'],
+                'car_group' => $carData['carGroup'],
+                'team_name' => $carData['teamName'],
+                'driver_id' => $driver->id,
+            ]);
         }
 
-        $this->info("Race logs created for {$drivers->count()} drivers.");
+        $this->info("Race logs and cars created for {$drivers->count()} drivers.");
 
         $this->updateRankings($race);
 
@@ -87,8 +100,6 @@ class GenerateRace extends Command
                     $driverB,
                     $raceLogs[$i]->position,
                     $raceLogs[$j]->position,
-                    $raceLogs[$i]->incidents ?? 0,
-                    $raceLogs[$j]->incidents ?? 0
                 );
 
                 $changeA = $result['changeA'];
@@ -121,5 +132,20 @@ class GenerateRace extends Command
                 return $values[$index];
             }
         }
+    }
+
+    /**
+     * @param Driver $driver
+     * @return array
+     */
+    private function generateCarData(Driver $driver): array
+    {
+        return [
+            'carId' => rand(1000, 1100),
+            'raceNumber' => rand(1, 999),
+            'carModel' => rand(1, 50),
+            'carGroup' => 'GT3',
+            'teamName' => "Team {$driver->last_name}",
+        ];
     }
 }
