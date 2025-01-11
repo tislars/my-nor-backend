@@ -6,7 +6,9 @@ use App\Models\Driver;
 use App\Models\RaceCar;
 use App\Models\RaceLog;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class LeaderboardController extends Controller
 {
@@ -69,6 +71,33 @@ class LeaderboardController extends Controller
             'leaderboard' => $leaderboard,
             'track' => $trackFormatted,
         ]);
+    }
+
+    /**
+     * @param string $track
+     * @return View
+     */
+    public function fastestLapsResponse(string $track)
+    {
+        $leaderboard = RaceLog::whereHas('race', function ($query) use ($track) {
+            $query->where('track_name', $track);
+        })
+            ->with('driver')
+            ->orderBy('fastest_lap', 'asc')
+            ->take(10)
+            ->get()
+            ->map(function ($log, $index) {
+                return [
+                    'position' => $index + 1,
+                    'driver' => $log->driver->first_name . ' ' . $log->driver->last_name,
+                    'fastest_lap' => $log->fastest_lap,
+                ];
+            });
+
+            return response()->json([
+                'leaderboard' => $leaderboard,
+                'track' => $track,
+            ]);
     }
 
     /**

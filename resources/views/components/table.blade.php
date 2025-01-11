@@ -1,15 +1,15 @@
 <div class="overflow-x-auto">
-    <table class="table-auto border-collapse w-full">
+    <table class="table-auto border-collapse w-full table-striped">
         <thead>
             <tr>
                 @foreach ($headers as $header)
-                    <th class="border px-4 py-2 text-left">{{ $header }}</th>
+                    <th class="border px-4 py-2">{{ $header }}</th>
                 @endforeach
             </tr>
         </thead>
         <tbody>
             @forelse ($rows as $row)
-                <tr>
+                <tr class="odd:bg-gray-100">
                     @foreach ($row as $cell)
                         @if (is_array($cell) && isset($cell['class']))
                             <td class="border px-4 py-2 {{ $cell['class'] }}">{!! $cell['value'] !!}</td>

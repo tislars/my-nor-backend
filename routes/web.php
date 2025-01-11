@@ -15,3 +15,5 @@ Route::get('/leaderboard/fastest-laps/{track}', [LeaderboardController::class, '
     ->name('leaderboards.fastest-laps')
     ->where('track', '[a-z\-]+');
 Route::get('/leaderboard/most-cuts/{track}', [LeaderboardController::class, 'mostCuts'])->name('leaderboards.most-cuts');
+
+Route::get('/api/leaderboard/fastest-laps/{track}', [LeaderboardController::class, 'fastestLapsResponse'])->name('api.leaderboards.fastest-laps');
