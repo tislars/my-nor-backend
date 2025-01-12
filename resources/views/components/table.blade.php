@@ -1,5 +1,5 @@
 <div class="overflow-x-auto">
-    <table class="table-auto border-collapse w-full table-striped">
+    <table class="table-auto border-collapse w-full">
         <thead>
             <tr>
                 @foreach ($headers as $header)

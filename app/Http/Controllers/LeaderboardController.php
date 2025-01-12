@@ -15,7 +15,7 @@ class LeaderboardController extends Controller
 
     public function index(): View
     {
-        $drivers = Driver::orderByDesc('elo')->paginate(3);
+        $drivers = Driver::orderByDesc('elo')->paginate(10);
         $currentPage = $drivers->currentPage();
         $perPage = $drivers->perPage();
         $headers = ['Rank', 'Short Name', 'Name', 'ELO', 'Safety Rating'];

@@ -16,6 +16,9 @@
                 My NOR
             </h1>
             <div class="flex space-x-6">
+                <a href="{{ route('dashboard') }}" class="text-gray-300 hover:text-white hover:underline transition">
+                    Dashboard
+                </a>
                 <a href="{{ route('racelogs.index') }}" class="text-gray-300 hover:text-white hover:underline transition">
                     Racelogs
                 </a>
@@ -27,6 +30,8 @@
                     Leaderboard
                 </a>
             </div>
+            <div>{{ session('steam_id') }}</div>
+            <img src="{!! session('avatar') !!}"/>
         </nav>
     </header>
 
