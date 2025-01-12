@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('first_name');
             $table->string('last_name');
             $table->string('short_name');
-            $table->string('player_id');
+            $table->string('steam_id');
             $table->integer('elo')->default(1500);
             $table->timestamps();
         });

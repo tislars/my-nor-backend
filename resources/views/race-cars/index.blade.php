@@ -3,7 +3,6 @@
     <x-table
         :headers="$headers"
         :rows="$rows"
-        :rowClasses="[]"
         emptyMessage="No race cars available."
     />
     {{ $raceCars->links() }}

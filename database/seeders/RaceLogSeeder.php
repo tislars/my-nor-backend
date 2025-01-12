@@ -24,6 +24,12 @@ class RaceLogSeeder extends Seeder
             shuffle($positions);
 
             foreach ($drivers as $index => $driver) {
+                if (is_null($driver->steam_id)) {
+                    $driver->update([
+                        'steam_id' => $this->generateSteamId(),
+                    ]);
+                }
+
                 $milliseconds = rand(105000, 127000);
                 $minutes = floor($milliseconds / 60000);
                 $seconds = floor(($milliseconds % 60000) / 1000);
@@ -39,6 +45,15 @@ class RaceLogSeeder extends Seeder
                 ]);
             }
         }
+    }
+
+    /**
+     * Generate a random Steam ID.
+     * Steam IDs are typically 17-digit numbers.
+     */
+    private function generateSteamId(): string
+    {
+        return '7656' . rand(100000000000, 999999999999);
     }
 
     private function generateIncidents(): int

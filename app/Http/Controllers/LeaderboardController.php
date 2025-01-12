@@ -18,29 +18,19 @@ class LeaderboardController extends Controller
         $drivers = Driver::orderByDesc('elo')->paginate(10);
         $currentPage = $drivers->currentPage();
         $perPage = $drivers->perPage();
-        $headers = ['Rank', 'Short Name', 'Name', 'ELO', 'Safety Rating'];
+        $headers = ['Rank', 'Short Name', 'Name', 'Steam ID', 'ELO', 'Safety Rating'];
         $rows = $drivers->map(function ($driver, $index) use ($currentPage, $perPage) {
             return [
                 'rank' => '#' . (($currentPage - 1) * $perPage + $index + 1),
                 'short_name' => $driver->short_name,
                 'name' => $driver->first_name . ' ' . $driver->last_name,
+                'steam_id' => $driver->steam_id,
                 'elo' => number_format($driver->elo, 0),
                 'safety_rating' => '...',
             ];
         })->toArray();
 
-        $rowClasses = $drivers->mapWithKeys(callback: function ($driver, $index) {
-            return [
-                $index => match ($index) {
-                    0 => 'bg-yellow-300',
-                    1 => 'bg-gray-300',
-                    2 => 'bg-amber-400',
-                    default => '',
-                }
-            ];
-        })->toArray();
-
-        return view('leaderboards.index', compact('headers', 'rows', 'rowClasses', 'drivers'));
+        return view('leaderboards.index', compact('headers', 'rows', 'drivers'));
     }
 
     /**

@@ -8,7 +8,6 @@ class Table extends Component
 {
     public array $headers;
     public array $rows;
-    public array $rowClasses;
     public string $emptyMessage;
 
     /**
@@ -16,14 +15,12 @@ class Table extends Component
      *
      * @param array $headers
      * @param array $rows
-     * @param array $rowClasses
      * @param string $emptyMessage
      */
-    public function __construct(array $headers, array $rows, array $rowClasses = [], string $emptyMessage = 'No data available.')
+    public function __construct(array $headers, array $rows, string $emptyMessage = 'No data available.')
     {
         $this->headers = $headers;
         $this->rows = $rows;
-        $this->rowClasses = $rowClasses;
         $this->emptyMessage = $emptyMessage;
     }
 

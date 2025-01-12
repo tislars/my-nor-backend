@@ -46,8 +46,13 @@ class GenerateRace extends Command
         shuffle($positions);
 
         foreach ($drivers as $index => $driver) {
-            $carData = $this->generateCarData($driver);
+            if (is_null($driver->steam_id)) {
+                $driver->update([
+                    'steam_id' => $this->generateSteamId(),
+                ]);
+            }
 
+            $carData = $this->generateCarData($driver);
             $milliseconds = rand(105000, 127000);
             $minutes = floor($milliseconds / 60000);
             $seconds = floor(($milliseconds % 60000) / 1000);
@@ -79,6 +84,15 @@ class GenerateRace extends Command
         $this->updateRankings($race);
 
         return 0;
+    }
+
+    /**
+     * Generate a random Steam ID.
+     * Steam IDs are typically 17-digit numbers.
+     */
+    private function generateSteamId(): string
+    {
+        return '7656' . rand(100000000000, 999999999999);
     }
 
     /**

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Driver extends Model
 {
-    protected $fillable = ['first_name', 'last_name', 'short_name', 'elo'];
+    protected $fillable = ['first_name', 'last_name', 'short_name', 'steam_id', 'elo'];
 
     /** @use HasFactory<\Database\Factories\DriverFactory> */
     use HasFactory;
